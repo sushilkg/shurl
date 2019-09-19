@@ -18,14 +18,13 @@ class LinkController extends Controller
      */
     public function store(Request $request): string
     {
-        request()->validate(['long_url' => 'required', 'short_tag' => 'unique:links']);
+        $attributes = request()->validate([
+            'long_url' => 'required',
+            'short_tag' => 'unique:links',
+            'expiration_date' => 'date_format:Y-m-d H:i:s'
+        ]);
 
-        $link = new Link;
-        $link->long_url = $request->long_url;
-        $link->short_tag = $request->short_tag;
-        $link->expiration_date = $request->expiration_date;
-
-        $link->save();
+        $link = Link::create($attributes);
 
         return $link;
     }
