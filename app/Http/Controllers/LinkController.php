@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\LinkExpiredException;
 use App\Exceptions\LinkGoneException;
 use App\Link;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LinkController extends Controller
@@ -12,13 +13,19 @@ class LinkController extends Controller
 
     /**
      * Store a link and generate short tag
+     * @param Request $request
      * @return string
      */
-    public function store(): string
+    public function store(Request $request): string
     {
         request()->validate(['long_url' => 'required', 'short_tag' => 'unique:links']);
 
-        $link = Link::create(request(['long_url', 'short_tag', 'expiration_date']));
+        $link = new Link;
+        $link->long_url = $request->long_url;
+        $link->short_tag = $request->short_tag;
+        $link->expiration_date = $request->expiration_date;
+
+        $link->save();
 
         return $link;
     }

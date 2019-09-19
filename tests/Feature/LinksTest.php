@@ -42,7 +42,6 @@ class LinksTest extends TestCase
     /** test */
     public function test_410_for_deleted_links(): void
     {
-
         $link = factory(Link::class)->create();
         $link->delete();
 
@@ -70,7 +69,17 @@ class LinksTest extends TestCase
         $response->assertSessionHasErrors();
     }
 
-    //short tag can be auto generated instead of provided
+    /** @test */
+    public function short_tag_can_be_auto_generated(): void
+    {
+        $link = factory(Link::class)->create(['short_tag' => '']);
+        $this->assertNotEmpty($link->short_tag);
+
+        $attributes = ['long_url' => $this->faker->url];
+        $response = $this->post('/links', $attributes);
+        $response->assertSessionDoesntHaveErrors();
+    }
+
     //long url black list validation using regex
     //search by short and long url
     //support data set that fit into memory
