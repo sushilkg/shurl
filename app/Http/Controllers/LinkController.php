@@ -25,7 +25,7 @@ class LinkController extends Controller
      */
     public function get($short_tag)
     {
-        $link = Link::withTrashed()->where('short_tag', request('short_tag'))->first();
+        $link = Link::withTrashed()->where('short_tag', $short_tag)->first();
 
         if (!$link) {
             throw new NotFoundHttpException('Link not found!');
@@ -38,6 +38,8 @@ class LinkController extends Controller
         if ($link->expiration_date < now()->format('Y-m-d H:i:s')) {
             throw new LinkExpiredException('Link expired!');
         }
+
+        $link->update(['hits' => $link->hits + 1]);
 
         return redirect($link->long_url);
     }
