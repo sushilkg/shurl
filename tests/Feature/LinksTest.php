@@ -11,7 +11,7 @@ class LinksTest extends TestCase
     use WithFaker, RefreshDatabase;
 
     /** @test */
-    public function link_saved_in_database(): void
+    public function short_link_created_and_redirects(): void
     {
         $this->withoutExceptionHandling();
 
@@ -23,7 +23,9 @@ class LinksTest extends TestCase
         ];
 
         $this->post('/links', $attributes);
-
         $this->assertDatabaseHas('links', $attributes);
+
+        $response = $this->get('/'.$attributes['short_tag']);
+        $response->assertRedirect($attributes['long_url']);
     }
 }

@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 Route::post('/links', 'LinkController@store');
+Route::get('/{short_tag}', 'LinkController@get');
