@@ -12,17 +12,24 @@
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('layouts.app');
+});
+
+Route::get('/login', function () {
+    return view('layouts.app');
+});
+
+Route::get('/dashboard', function () {
+    return view('layouts.app');
 });
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
     Route::delete('/dashboard/delete/{link}', 'DashboardController@delete');
     Route::get('/dashboard/view/{link}', 'DashboardController@view');
     Route::post('/dashboard/search', 'DashboardController@search');
-
 });
 
 Route::post('/links', 'LinkController@store');
