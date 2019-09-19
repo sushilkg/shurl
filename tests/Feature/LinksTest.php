@@ -30,32 +30,23 @@ class LinksTest extends TestCase
     /** test */
     public function test_410_for_expired_links(): void
     {
-        $attributes = [
-            'long_url' => $this->faker->url,
-            'short_tag' => $this->faker->slug,
-            'expiration_date' => $this->faker->dateTime('-1 day')->format('Y-m-d H:i:s'),
-        ];
+        $expiration_date = $this->faker->dateTime('-1 day')->format('Y-m-d H:i:s');
+        $short_tag = $this->faker->slug;
 
-        $this->post('/links', $attributes);
+        factory(Link::class)->create(['expiration_date' => $expiration_date, 'short_tag' => $short_tag]);
 
-        $response = $this->get('/'.$attributes['short_tag']);
+        $response = $this->get('/'.$short_tag);
         $response->assertStatus(410);
     }
 
     /** test */
     public function test_410_for_deleted_links(): void
     {
-        $attributes = [
-            'long_url' => $this->faker->url,
-            'short_tag' => $this->faker->slug
-        ];
 
-        $this->post('/links', $attributes);
-
-        $link = Link::where('short_tag', $attributes['short_tag'])->first();
+        $link = factory(Link::class)->create();
         $link->delete();
 
-        $response = $this->get('/'.$attributes['short_tag']);
+        $response = $this->get('/'.$link['short_tag']);
         $response->assertStatus(410);
     }
 
@@ -79,6 +70,9 @@ class LinksTest extends TestCase
         $response->assertSessionHasErrors();
     }
 
-    //short tag must be unique
     //short tag can be auto generated instead of provided
+    //long url black list validation using regex
+    //search by short and long url
+    //support data set that fit into memory
+    //hit increases
 }
