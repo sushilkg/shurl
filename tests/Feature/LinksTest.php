@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Link;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -40,4 +41,24 @@ class LinksTest extends TestCase
         $response = $this->get('/'.$attributes['short_tag']);
         $response->assertStatus(410);
     }
+
+    /** test */
+    public function test_410_for_deleted_links(): void
+    {
+        $attributes = [
+            'long_url' => $this->faker->url,
+            'short_tag' => $this->faker->slug
+        ];
+
+        $this->post('/links', $attributes);
+
+        $link = Link::where('short_tag', $attributes['short_tag'])->first();
+        $link->delete();
+
+        $response = $this->get('/'.$attributes['short_tag']);
+        $response->assertStatus(410);
+    }
+
+    //short tag must be unique
+    //short tag can be auto generated instead of provided
 }

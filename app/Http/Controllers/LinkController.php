@@ -35,7 +35,7 @@ class LinkController extends Controller
             throw new LinkGoneException('Link gone!');
         }
 
-        if ($link->expiration_date < now()->format('Y-m-d H:i:s')) {
+        if ($link->expiration_date !== null && $link->expiration_date < now()->format('Y-m-d H:i:s')) {
             throw new LinkExpiredException('Link expired!');
         }
 
