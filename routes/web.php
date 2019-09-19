@@ -12,15 +12,18 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Auth::routes();
 
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
-Route::delete('/dashboard/delete/{link}', 'DashboardController@delete')->middleware('auth');
-Route::get('/dashboard/view/{link}', 'DashboardController@view')->middleware('auth');
-Route::post('/dashboard/search', 'DashboardController@search')->middleware('auth');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+    Route::delete('/dashboard/delete/{link}', 'DashboardController@delete');
+    Route::get('/dashboard/view/{link}', 'DashboardController@view');
+    Route::post('/dashboard/search', 'DashboardController@search');
+
+});
 
 Route::post('/links', 'LinkController@store');
 Route::get('/{short_tag}', 'LinkController@get');
