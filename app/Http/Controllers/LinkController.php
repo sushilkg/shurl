@@ -9,15 +9,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LinkController extends Controller
 {
+
     /**
-     * Save links
+     * Store a link and generate short tag
+     * @return string
      */
-    public function store(): void
+    public function store(): string
     {
-        Link::create(request(['long_url', 'short_tag', 'expiration_date']));
+        request()->validate(['long_url' => 'required', 'short_tag' => 'unique:links']);
+
+        $link = Link::create(request(['long_url', 'short_tag', 'expiration_date']));
+
+        return $link;
     }
 
     /**
+     * Fetch and redirect short tag to long url
      * @param $short_tag
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      * @throws LinkExpiredException

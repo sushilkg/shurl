@@ -59,6 +59,26 @@ class LinksTest extends TestCase
         $response->assertStatus(410);
     }
 
+    /** @test */
+    public function always_require_long_url(): void
+    {
+        $this->post('/links')->assertSessionHasErrors();
+    }
+
+    /** @test */
+    public function provided_short_tag_must_be_unique(): void
+    {
+        $attributes = [
+            'long_url' => $this->faker->url,
+            'short_tag' => $this->faker->slug
+        ];
+
+        $this->post('/links', $attributes);
+        $response = $this->post('/links', $attributes);
+
+        $response->assertSessionHasErrors();
+    }
+
     //short tag must be unique
     //short tag can be auto generated instead of provided
 }
