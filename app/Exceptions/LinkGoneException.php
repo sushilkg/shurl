@@ -8,6 +8,6 @@ class LinkGoneException extends Exception
 {
     public function render($request)
     {
-        return response($request, 410);
+        return response('Link gone!', 410);
     }
 }
