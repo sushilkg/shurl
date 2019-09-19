@@ -12,15 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('layouts.app');
+    return view('app');
 });
 
 Route::get('/login', function () {
-    return view('layouts.app');
+    return view('app');
 });
 
 Route::get('/dashboard', function () {
-    return view('layouts.app');
+    return view('app');
 });
 
 Auth::routes();
