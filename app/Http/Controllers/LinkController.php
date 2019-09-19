@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\LinkExpiredException;
 use App\Exceptions\LinkGoneException;
 use App\Link;
-use Illuminate\Http\Request;
+use App\Rules\BlacklistedUrls;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LinkController extends Controller
@@ -13,13 +13,12 @@ class LinkController extends Controller
 
     /**
      * Store a link and generate short tag
-     * @param Request $request
      * @return string
      */
-    public function store(Request $request): string
+    public function store(): string
     {
         $attributes = request()->validate([
-            'long_url' => 'required',
+            'long_url' => ['required', new BlacklistedUrls()],
             'short_tag' => 'unique:links',
             'expiration_date' => 'date_format:Y-m-d H:i:s'
         ]);
@@ -52,7 +51,7 @@ class LinkController extends Controller
             throw new LinkExpiredException('Link expired!');
         }
 
-        $link->update(['hits' => $link->hits + 1]);
+        $link->increment('hits', 1);
 
         return redirect($link->long_url);
     }

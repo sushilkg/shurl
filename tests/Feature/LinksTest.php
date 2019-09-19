@@ -59,7 +59,7 @@ class LinksTest extends TestCase
     public function provided_short_tag_must_be_unique(): void
     {
         $attributes = [
-            'long_url' => $this->faker->url,
+            'long_url' => 'http://gooddomain.com',
             'short_tag' => $this->faker->slug
         ];
 
@@ -72,7 +72,7 @@ class LinksTest extends TestCase
     /** @test */
     public function short_tag_can_be_auto_generated(): void
     {
-        $link = factory(Link::class)->create(['short_tag' => '']);
+        $link = factory(Link::class)->create(['short_tag' => null]);
         $this->assertNotEmpty($link->short_tag);
 
         $attributes = ['long_url' => $this->faker->url];
@@ -80,8 +80,23 @@ class LinksTest extends TestCase
         $response->assertSessionDoesntHaveErrors();
     }
 
-    //long url black list validation using regex
-    //search by short and long url
+    /** @test */
+    public function hit_increases_on_link_visit(): void
+    {
+        $link = factory(Link::class)->create(['hits' => 0, 'expiration_date' => null]);
+
+        $this->get('/'.$link->short_tag);
+        $updatedLink = Link::where(['short_tag' => $link->short_tag])->first();
+        $this->assertEquals(1, $updatedLink->hits);
+    }
+
+    /** @test */
+    public function blacklisted_url_can_not_be_shortened(): void
+    {
+        $this->post('/links', ['long_url' => 'https://baddomain.com'])->assertSessionHasErrors();
+        $this->post('/links', ['long_url' => 'https://gooddomain.com'])->assertSessionHasNoErrors();
+    }
+
+    //admin can search by short and long url
     //support data set that fit into memory
-    //hit increases
 }
