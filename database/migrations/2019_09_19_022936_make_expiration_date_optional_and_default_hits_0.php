@@ -28,6 +28,9 @@ class MakeExpirationDateOptionalAndDefaultHits0 extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('links', function (Blueprint $table) {
+            $table->dateTime('expiration_date')->change();
+            $table->unsignedBigInteger('hits')->change();
+        });
     }
 }
