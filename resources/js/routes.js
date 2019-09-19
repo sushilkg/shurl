@@ -1,6 +1,7 @@
 import IndexComponent from "./components/IndexComponent";
 import DashboardComponent from "./components/DashboardComponent";
-import LoginComponent from "./components/LoginComponent.vue"
+import LoginComponent from "./components/LoginComponent"
+import RegisterComponent from "./components/RegisterComponent";
 
 export default {
     mode: 'history',
@@ -16,6 +17,10 @@ export default {
         {
             path: '/login',
             component: LoginComponent
+        },
+        {
+            path: '/register',
+            component: RegisterComponent
         }
     ]
 }
