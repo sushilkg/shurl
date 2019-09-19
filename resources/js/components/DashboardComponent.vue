@@ -17,7 +17,17 @@
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')
+            console.log('Dashboard component mounted.')
+        },
+        created() {
+            axios.get('/dashboard/all').then(links => {
+                console.log(links);
+            }).catch((error) => {
+                console.log(error.response.status);
+                if (error.response && error.response.status === 401) {
+                    console.log('Not logged in!');
+                }
+            })
         }
     }
 </script>

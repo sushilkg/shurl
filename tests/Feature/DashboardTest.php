@@ -15,10 +15,10 @@ class DashboardTest extends TestCase
     /** @test */
     public function redirect_if_not_logged_in(): void
     {
-        $response = $this->get('/dashboard');
+        $response = $this->get('/dashboard/all');
         $response->assertRedirect();
 
-        $response = $this->actingAs(factory(User::class)->create())->get('/dashboard');
+        $response = $this->actingAs(factory(User::class)->create())->get('/dashboard/all');
         $response->assertStatus(200);
     }
 
@@ -28,7 +28,7 @@ class DashboardTest extends TestCase
         $link1 = factory(Link::class)->create();
         $link2 = factory(Link::class)->create();
 
-        $response = $this->actingAs(factory(User::class)->create())->get('/dashboard');
+        $response = $this->actingAs(factory(User::class)->create())->get('/dashboard/all');
 
         $response->assertSee($link1->short_tag)->assertSee($link2->short_tag);
     }
