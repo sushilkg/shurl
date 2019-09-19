@@ -10,6 +10,23 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return view('dashboard');
+        return Link::all();
+    }
+
+    public function view(Link $link)
+    {
+        return $link;
+    }
+
+    public function delete(Link $link)
+    {
+        return $link->delete();
+    }
+
+    public function search(Request $request)
+    {
+        return Link::where(['short_tag' => $request->short_tag])
+            ->orWhere(['long_url' => $request->long_url])
+            ->find();
     }
 }

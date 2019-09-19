@@ -16,6 +16,11 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard')->middleware('auth');
+Route::delete('/dashboard/delete/{link}', 'DashboardController@delete')->middleware('auth');
+Route::get('/dashboard/view/{link}', 'DashboardController@view')->middleware('auth');
+Route::post('/dashboard/search', 'DashboardController@search')->middleware('auth');
+
 Route::post('/links', 'LinkController@store');
 Route::get('/{short_tag}', 'LinkController@get');
