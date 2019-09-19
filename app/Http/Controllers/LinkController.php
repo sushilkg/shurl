@@ -14,7 +14,7 @@ class LinkController extends Controller
      */
     public function store(): void
     {
-        Link::create(request(['long_url', 'short_tag', 'expiration_date', 'hits']));
+        Link::create(request(['long_url', 'short_tag', 'expiration_date']));
     }
 
     /**
