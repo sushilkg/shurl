@@ -25,8 +25,16 @@ class DashboardController extends Controller
 
     public function search(Request $request)
     {
-        return Link::where(['short_tag' => $request->short_tag])
-            ->orWhere(['long_url' => $request->long_url])
-            ->find();
+        $links = Link::withTrashed();
+
+        if (!empty($request->short_tag)) {
+            $links->where('short_tag', 'like', '%'.$request->short_tag.'%');
+        }
+
+        if (!empty($request->long_url)) {
+            $links->where('long_url', 'like', '%'.$request->long_url.'%');
+        }
+
+        return $links->get();
     }
 }

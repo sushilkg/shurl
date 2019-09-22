@@ -24,6 +24,6 @@ Route::post('/links', 'LinkController@store');
 Route::middleware('auth:api')->group(function () {
     Route::get('/dashboard/all', 'DashboardController@all')->name('dashboard');
     Route::get('/dashboard/view/{link}', 'DashboardController@view');
-    Route::post('/dashboard/search', 'DashboardController@search');
+    Route::get('/dashboard/search', 'DashboardController@search');
     Route::delete('/dashboard/delete/{link}', 'DashboardController@delete');
 });
