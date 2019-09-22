@@ -20,16 +20,17 @@
             console.log('Dashboard component mounted.')
         },
         created() {
-            console.log(this.$cookies.get('api_token'));
+            if(!this.$cookies.get('api_token')) {
+                this.$router.push('/login');
+            }
 
-            // axios.get('/api/dashboard/all' + $cookies.get('api_token')).then(links => {
-            //     console.log(links);
-            // }).catch((error) => {
-            //     console.log(error.response.status);
-            //     if (error.response && error.response.status === 401) {
-            //         console.log('Not logged in!');
-            //     }
-            // })
+            axios.get('/api/dashboard/all?api_token=' + this.$cookies.get('api_token')).then(links => {
+                console.log(links);
+            }).catch((error) => {
+                if (error.response && error.response.status === 401) {
+                    this.$router.push('/login');
+                }
+            })
         }
     }
 </script>

@@ -2,14 +2,14 @@
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-8">
-                <form>
+                <form @submit="formSubmit">
                     <div class="form-row mb-4">
                         <div class="col-12 col-md-8 mb-2 mb-md-0">
-                            <input type="text" class="form-control form-control-lg" id="destinationUrl"
+                            <input v-model="long_url" type="text" class="form-control form-control-lg" id="destinationUrl"
                                    placeholder="Enter your link (required)">
                         </div>
                         <div class="col-12 col-md-4 mb-2 mb-md-0">
-                            <input type="text" class="form-control form-control-lg" id="shortCode"
+                            <input v-model="short_tag" type="text" class="form-control form-control-lg" id="shortCode"
                                    placeholder="Slug (optional)">
                         </div>
                     </div>
@@ -34,6 +34,24 @@
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+        props: {
+            long_url: '',
+            short_tag: ''
+        },
+        methods: {
+            formSubmit(e) {
+                e.preventDefault();
+
+                axios.post('/api/links', {
+                    long_url: this.long_url,
+                    short_tag: this.short_tag
+                }).then((response) => {
+                    console.log(response)
+                }).catch((error) => {
+                    console.log(error);
+                });
+            }
         }
     }
 </script>

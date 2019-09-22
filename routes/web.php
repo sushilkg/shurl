@@ -25,5 +25,4 @@ Route::get('/dashboard', function () {
 
 Auth::routes();
 
-Route::post('/links', 'LinkController@store');
 Route::get('/{short_tag}', 'LinkController@get');

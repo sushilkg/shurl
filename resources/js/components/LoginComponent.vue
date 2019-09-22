@@ -57,9 +57,10 @@
                 axios.post('/api/login', {
                     email: this.email,
                     password: this.password
-                }).then(function (response) {
-                    window.$cookies.set('api_token', response.data.api_token);
-                }).catch(function (error) {
+                }).then((response) => {
+                    this.$cookies.set('api_token', response.data.api_token);
+                    this.$router.push('/dashboard');
+                }).catch((error) => {
                     console.log(error);
                 });
             }

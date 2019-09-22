@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/register', 'AuthController@register');
 Route::post('/login', 'AuthController@login');
+Route::post('/links', 'LinkController@store');
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/dashboard/all', 'DashboardController@all')->name('dashboard');
