@@ -20,14 +20,16 @@
             console.log('Dashboard component mounted.')
         },
         created() {
-            axios.get('/api/dashboard/all').then(links => {
-                console.log(links);
-            }).catch((error) => {
-                console.log(error.response.status);
-                if (error.response && error.response.status === 401) {
-                    console.log('Not logged in!');
-                }
-            })
+            console.log(this.$cookies.get('api_token'));
+
+            // axios.get('/api/dashboard/all' + $cookies.get('api_token')).then(links => {
+            //     console.log(links);
+            // }).catch((error) => {
+            //     console.log(error.response.status);
+            //     if (error.response && error.response.status === 401) {
+            //         console.log('Not logged in!');
+            //     }
+            // })
         }
     }
 </script>

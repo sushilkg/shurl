@@ -29,7 +29,7 @@ class AuthController extends Controller
             throw new InvalidLoginException('Invalid login!');
         }
 
-        if(!Hash::check(request('password'), $user->password)) {
+        if (!Hash::check(request('password'), $user->password)) {
             throw new InvalidLoginException('Invalid login!');
         }
 
@@ -37,6 +37,6 @@ class AuthController extends Controller
         $user->api_token = $token;
         $user->save();
 
-        return $token;
+        return ['api_token' => $token];
     }
 }

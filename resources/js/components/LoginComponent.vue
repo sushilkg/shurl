@@ -6,13 +6,13 @@
                     <div class="card-header">Login</div>
 
                     <div class="card-body">
-                        <form method="POST" action="/login">
+                        <form @submit="formSubmit">
 
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email"
+                                    <input v-model="email" id="email" type="email"
                                            class="form-control" name="email"
                                            required autocomplete="email" autofocus>
                                 </div>
@@ -22,7 +22,7 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password"
+                                    <input v-model="password" id="password" type="password"
                                            class="form-control " name="password"
                                            required autocomplete="current-password">
                                 </div>
@@ -46,6 +46,23 @@
 
 <script>
     export default {
-        props: {},
+        props: {
+            email: '',
+            password: ''
+        },
+        methods: {
+            formSubmit(e) {
+                e.preventDefault();
+
+                axios.post('/api/login', {
+                    email: this.email,
+                    password: this.password
+                }).then(function (response) {
+                    window.$cookies.set('api_token', response.data.api_token);
+                }).catch(function (error) {
+                    console.log(error);
+                });
+            }
+        }
     };
 </script>
