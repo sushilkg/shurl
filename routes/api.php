@@ -16,3 +16,10 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('/dashboard/all', 'DashboardController@all')->name('dashboard');
+    Route::get('/dashboard/view/{link}', 'DashboardController@view');
+    Route::post('/dashboard/search', 'DashboardController@search');
+    Route::delete('/dashboard/delete/{link}', 'DashboardController@delete');
+});

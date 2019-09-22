@@ -25,12 +25,5 @@ Route::get('/dashboard', function () {
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/dashboard/all', 'DashboardController@all')->name('dashboard');
-    Route::delete('/dashboard/delete/{link}', 'DashboardController@delete');
-    Route::get('/dashboard/view/{link}', 'DashboardController@view');
-    Route::post('/dashboard/search', 'DashboardController@search');
-});
-
 Route::post('/links', 'LinkController@store');
 Route::get('/{short_tag}', 'LinkController@get');
