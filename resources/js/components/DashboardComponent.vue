@@ -5,9 +5,7 @@
                 <div class="card">
                     <div class="card-header">Dashboard</div>
 
-                    <div class="card-body">
-                        You are logged in!
-                    </div>
+                    <div class="card-body" v-for="link in links" v-text="link.long_url"></div>
                 </div>
             </div>
         </div>
@@ -19,13 +17,18 @@
         mounted() {
             console.log('Dashboard component mounted.')
         },
+        data() {
+            return {
+                links: []
+            }
+        },
         created() {
-            if(!this.$cookies.get('api_token')) {
+            if (!this.$cookies.get('api_token')) {
                 this.$router.push('/login');
             }
 
-            axios.get('/api/dashboard/all?api_token=' + this.$cookies.get('api_token')).then(links => {
-                console.log(links);
+            axios.get('/api/dashboard/all?api_token=' + this.$cookies.get('api_token')).then(response => {
+                this.links = response.data;
             }).catch((error) => {
                 if (error.response && error.response.status === 401) {
                     this.$router.push('/login');
