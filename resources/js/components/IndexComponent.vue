@@ -1,11 +1,12 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-8">
+            <div class="col-12 col-md-8 mb-4">
                 <form @submit="formSubmit">
                     <div class="form-row mb-4">
                         <div class="col-12 col-md-8 mb-2 mb-md-0">
-                            <input v-model="long_url" type="text" class="form-control form-control-lg" id="destinationUrl"
+                            <input v-model="long_url" type="text" class="form-control form-control-lg"
+                                   id="destinationUrl"
                                    placeholder="Enter your link (required)">
                         </div>
                         <div class="col-12 col-md-4 mb-2 mb-md-0">
@@ -21,10 +22,17 @@
                 </form>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12 result">
-                <h5 id="resultTitle"></h5>
-                <p id="resultDescription"></p>
+
+        <div class="row" v-if="errors">
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert" v-text="errors"></div>
+            </div>
+        </div>
+
+
+        <div class="row" v-if="message">
+            <div class="col-12">
+                <div class="alert alert-success" role="alert" v-html="message"></div>
             </div>
         </div>
     </div>
@@ -34,6 +42,12 @@
     export default {
         mounted() {
             console.log('Component mounted.')
+        },
+        data() {
+            return {
+                errors: '',
+                message: ''
+            }
         },
         props: {
             long_url: '',
@@ -47,9 +61,15 @@
                     long_url: this.long_url,
                     short_tag: this.short_tag
                 }).then((response) => {
-                    console.log(response)
-                }).catch((error) => {
-                    console.log(error);
+                    const newShortLink = this.long_url + "/" + response.data.short_tag;
+                    this.message = 'Short tag created! Ready to share: <a target="_blank" href="' + newShortLink + '">' + newShortLink + '</a>';
+                    this.errors = '';
+                }).catch((errors) => {
+                    this.message = '';
+                    this.errors = '';
+                    Object.keys(errors.response.data.errors).forEach(error => {
+                        this.errors = this.errors + ' ' + errors.response.data.errors[error];
+                    });
                 });
             }
         }
