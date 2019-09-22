@@ -8,6 +8,12 @@
                     <div class="card-body">
                         <form @submit="formSubmit">
 
+                            <div class="row" v-if="errors">
+                                <div class="col-12">
+                                    <div class="alert alert-warning" role="alert" v-text="errors"></div>
+                                </div>
+                            </div>
+
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
@@ -50,6 +56,11 @@
             email: '',
             password: ''
         },
+        data() {
+            return {
+                errors: ''
+            }
+        },
         methods: {
             formSubmit(e) {
                 e.preventDefault();
@@ -60,8 +71,8 @@
                 }).then((response) => {
                     this.$cookies.set('api_token', response.data.api_token);
                     this.$router.push('/dashboard');
-                }).catch((error) => {
-                    console.log(error);
+                }).catch((errors) => {
+                    this.errors = errors.response.data;
                 });
             }
         }

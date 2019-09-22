@@ -6,13 +6,18 @@
                     <div class="card-header">Register</div>
 
                     <div class="card-body">
-                        <form method="POST" action="/api/register">
+                        <form @submit="formSubmit">
+                            <div class="row" v-if="errors">
+                                <div class="col-12">
+                                    <div class="alert alert-warning" role="alert" v-text="errors"></div>
+                                </div>
+                            </div>
 
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
                                 <div class="col-md-6">
-                                    <input id="name" type="text"
+                                    <input v-model="name" id="name" type="text"
                                            class="form-control" name="name"
                                            required autocomplete="name" autofocus>
                                 </div>
@@ -22,7 +27,7 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email"
+                                    <input v-model="email" id="email" type="email"
                                            class="form-control" name="email"
                                            required autocomplete="email">
                                 </div>
@@ -32,7 +37,7 @@
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
 
                                 <div class="col-md-6">
-                                    <input id="password" type="password"
+                                    <input v-model="password" id="password" type="password"
                                            class="form-control" name="password"
                                            required autocomplete="new-password">
                                 </div>
@@ -43,7 +48,8 @@
                                     Password</label>
 
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control"
+                                    <input v-model="password_confirmation" id="password-confirm" type="password"
+                                           class="form-control"
                                            name="password_confirmation" required autocomplete="new-password">
                                 </div>
                             </div>
@@ -65,6 +71,35 @@
 
 <script>
     export default {
-        props: {},
+        props: {
+            name: '',
+            email: '',
+            password: '',
+            password_confirmation: ''
+        },
+        data() {
+            return {
+                errors: ''
+            }
+        },
+        methods: {
+            formSubmit(e) {
+                e.preventDefault();
+
+                axios.post('/api/register', {
+                    name: this.name,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.password_confirmation
+                }).then((response) => {
+                    this.$router.push('/login');
+                }).catch((errors) => {
+                    this.errors = '';
+                    Object.keys(errors.response.data.errors).forEach(error => {
+                        this.errors = this.errors + ' ' + errors.response.data.errors[error];
+                    });
+                });
+            }
+        }
     };
 </script>
