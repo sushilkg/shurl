@@ -4,25 +4,35 @@
             <div class="col-12 col-md-10 mb-4">
                 <form @submit="formSubmit">
                     <div class="form-row mb-2">
-                        <div class="col-12 col-md-5 mb-2 mb-md-0">
-                            <input v-model="long_url" type="text" class="form-control form-control-lg"
+                        <div class="col-12 col-md-6 mb-2 mb-md-0">
+                            <input v-model="long_url"
+                                   type="text"
+                                   class="form-control form-control-lg"
                                    id="destinationUrl"
                                    placeholder="Enter your link (required)">
                         </div>
                         <div class="col-12 col-md-4 mb-2 mb-md-0">
-                            <input v-model="short_tag" type="text" class="form-control form-control-lg" id="shortCode"
+                            <input v-model="short_tag"
+                                   type="text"
+                                   class="form-control form-control-lg"
+                                   id="shortCode"
                                    placeholder="Slug (optional)">
                         </div>
                     </div>
                     <div class="form-row mb-4">
-                        <div class="col-12 col-md-4 mb-2 mb-md-0">
-                            <datetime v-model="expiration_date" input-class="form-control form-control-lg"
-                                      type="datetime" :placeholder="'Expiration time (optional)'"></datetime>
+                        <div class="col-12 col-md-5 mb-2 mb-md-0">
+                            <datetime v-model="expiration_date"
+                                      input-class="form-control form-control-lg"
+                                      type="datetime"
+                                      :placeholder="'Expiration time (optional)'">
+                            </datetime>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="col-12 col-md-3">
-                            <button type="submit" class="btn btn-block btn-lg btn-primary">Shorten</button>
+                            <button type="submit"
+                                    class="btn btn-block btn-lg btn-primary">Shorten
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -60,16 +70,30 @@
         }
         ,
         methods: {
+            fixUrl() {
+                let regex = /^(http|https)/;
+                if (this.long_url.length > 3 && !this.long_url.match(regex)) {
+                    this.long_url = 'http://' + this.long_url;
+                }
+            },
             formSubmit(e) {
                 e.preventDefault();
 
+                this.fixUrl();
+
                 axios.post('/api/links', {
                     long_url: this.long_url,
-                    short_tag: this.short_tag
+                    short_tag: this.short_tag,
+                    expiration_date: this.expiration_date
                 }).then((response) => {
                     const newShortLink = window.location.href + response.data.short_tag;
                     this.message = 'Short tag created! Ready to share: <a target="_blank" href="' + newShortLink + '">' + newShortLink + '</a>';
                     this.errors = '';
+
+
+                    this.long_url = '';
+                    this.short_tag = '';
+                    this.expiration_date = '';
                 }).catch((errors) => {
                     this.message = '';
                     this.errors = '';

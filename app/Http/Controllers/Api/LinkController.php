@@ -17,13 +17,22 @@ class LinkController extends Controller
      */
     public function store(): string
     {
-        $attributes = request()->validate([
+        request()->validate([
             'long_url' => ['required', new BlacklistedUrls()],
-            'short_tag' => 'unique:links',
-            'expiration_date' => 'date_format:Y-m-d H:i:s'
+            'short_tag' => 'unique:links'
         ]);
 
-        $link = Link::create($attributes);
+        $expiration_date = null;
+        if (!empty(request('expiration_date'))) {
+            $expiration_date = date('Y-m-d H:i:s', strtotime(request('expiration_date')));
+        }
+
+        $link = Link::create([
+            'long_url' => request('long_url'),
+            'short_tag' => request('short_tag'),
+            'expiration_date' => $expiration_date,
+
+        ]);
 
         return $link;
     }

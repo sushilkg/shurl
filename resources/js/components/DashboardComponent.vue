@@ -15,8 +15,7 @@
 
                 <div class="card mb-2" v-for="link in links">
                     <div class="card-body">
-                        Long url: {{link.long_url}}<br/>
-                        Short tag: {{link.short_tag}}<br/>
+                        Long url: {{link.long_url}}, short tag: {{link.short_tag}}<br/>
                         Total hits: {{link.hits}}<br/>
                         Expiration date: {{link.expiration_date ? link.expiration_date : '-' }}<br/>
                         Deleted: {{!!link.deleted_at}}<br/>
