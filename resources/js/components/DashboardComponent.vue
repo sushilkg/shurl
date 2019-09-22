@@ -1,11 +1,16 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Dashboard</div>
-
-                    <div class="card-body" v-for="link in links" v-text="link.long_url"></div>
+            <div class="col-6 col-md-10">
+                <div class="card mb-2" v-for="link in links">
+                    <div class="card-body">
+                        Long url: {{link.long_url}}<br />
+                        Short tag: {{link.short_tag}}<br />
+                        Total hits: {{link.hits}}<br />
+                        Expiration date: {{link.expiration_date ? link.expiration_date : '-' }}<br />
+                        Deleted: {{!!link.deleted_at}}<br />
+                        Created at: {{link.created_at}}, Updated at: {{link.created_at}}<br />
+                    </div>
                 </div>
             </div>
         </div>

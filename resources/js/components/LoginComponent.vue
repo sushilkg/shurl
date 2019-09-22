@@ -69,6 +69,7 @@
                 }).then((response) => {
                     this.$cookies.set('api_token', response.data.api_token);
                     this.$router.push('/dashboard');
+                    EventDispatcher.fire('loggedIn');
                 }).catch((errors) => {
                     this.errors = errors.response.data;
                 });
