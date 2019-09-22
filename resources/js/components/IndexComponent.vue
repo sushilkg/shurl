@@ -79,6 +79,11 @@
             formSubmit(e) {
                 e.preventDefault();
 
+                if(!this.long_url.length) {
+                    this.errors = 'Please fill the url you need to shorten.';
+                    return;
+                }
+
                 this.fixUrl();
 
                 axios.post('/api/links', {

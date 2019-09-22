@@ -12,7 +12,6 @@ class LinkController extends Controller
 {
 
     /**
-     * Store a link and generate short tag
      * @return string
      */
     public function store(): string
