@@ -27,15 +27,15 @@ class AuthController extends Controller
         return redirect('/login');
     }
 
+    /**
+     * @return array
+     * @throws InvalidLoginException
+     */
     public function login()
     {
         $user = User::where(['email' => request('email')])->first();
 
-        if (!$user) {
-            throw new InvalidLoginException('Invalid login!');
-        }
-
-        if (!Hash::check(request('password'), $user->password)) {
+        if (!$user || !Hash::check(request('password'), $user->password)) {
             throw new InvalidLoginException('Invalid login!');
         }
 
