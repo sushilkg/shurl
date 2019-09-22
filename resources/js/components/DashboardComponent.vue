@@ -20,7 +20,7 @@
             console.log('Dashboard component mounted.')
         },
         created() {
-            axios.get('/dashboard/all').then(links => {
+            axios.get('/api/dashboard/all').then(links => {
                 console.log(links);
             }).catch((error) => {
                 console.log(error.response.status);
