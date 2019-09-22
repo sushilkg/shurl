@@ -52,13 +52,11 @@
 
 <script>
     export default {
-        props: {
-            email: '',
-            password: ''
-        },
         data() {
             return {
-                errors: ''
+                errors: '',
+                email: '',
+                password: ''
             }
         },
         methods: {

@@ -71,15 +71,13 @@
 
 <script>
     export default {
-        props: {
-            name: '',
-            email: '',
-            password: '',
-            password_confirmation: ''
-        },
         data() {
             return {
-                errors: ''
+                errors: '',
+                name: '',
+                email: '',
+                password: '',
+                password_confirmation: ''
             }
         },
         methods: {

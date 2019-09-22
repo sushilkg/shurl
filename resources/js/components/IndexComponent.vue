@@ -46,13 +46,12 @@
         data() {
             return {
                 errors: '',
-                message: ''
+                message: '',
+                long_url: '',
+                short_tag: ''
             }
-        },
-        props: {
-            long_url: '',
-            short_tag: ''
-        },
+        }
+        ,
         methods: {
             formSubmit(e) {
                 e.preventDefault();
