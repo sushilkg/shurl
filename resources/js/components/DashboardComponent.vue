@@ -81,6 +81,7 @@
                     this.links = response.data;
                 }).catch((error) => {
                     if (error.response && error.response.status === 401) {
+                        EventDispatcher.fire('loggedOut');
                         this.$router.push('/login');
                     }
                 });

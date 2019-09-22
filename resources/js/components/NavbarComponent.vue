@@ -23,10 +23,20 @@
                             Login
                         </router-link>
                     </li>
+                    <li class="nav-item" v-show="!isLoggedIn">
+                        <router-link class="nav-link" to="/register">
+                            Register
+                        </router-link>
+                    </li>
                     <li class="nav-item" v-show="isLoggedIn">
                         <router-link class="nav-link" to="/dashboard">
                             Dashboard
                         </router-link>
+                    </li>
+                    <li class="nav-item" v-show="isLoggedIn">
+                        <a class="nav-link" @click="logout" href="#">
+                            Logout
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -48,7 +58,17 @@
         created() {
             EventDispatcher.listen('loggedIn', () => {
                 this.isLoggedIn = true;
-            })
+            });
+            EventDispatcher.listen('loggedOut', () => {
+                this.isLoggedIn = false;
+            });
+        },
+        methods: {
+            logout() {
+                this.isLoggedIn = false;
+                this.$cookies.remove('api_token');
+                this.$router.push('/login');
+            }
         },
         name: 'navbar'
     };
