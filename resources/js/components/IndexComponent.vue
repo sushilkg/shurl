@@ -16,7 +16,8 @@
                     </div>
                     <div class="form-row mb-4">
                         <div class="col-12 col-md-4 mb-2 mb-md-0">
-                            <datetime v-model="expiration_date" input-class="form-control form-control-lg" type="datetime" :placeholder="'Expiration time (optional)'"></datetime>
+                            <datetime v-model="expiration_date" input-class="form-control form-control-lg"
+                                      type="datetime" :placeholder="'Expiration time (optional)'"></datetime>
                         </div>
                     </div>
                     <div class="form-row">
@@ -66,7 +67,7 @@
                     long_url: this.long_url,
                     short_tag: this.short_tag
                 }).then((response) => {
-                    const newShortLink = this.long_url + "/" + response.data.short_tag;
+                    const newShortLink = window.location.href + response.data.short_tag;
                     this.message = 'Short tag created! Ready to share: <a target="_blank" href="' + newShortLink + '">' + newShortLink + '</a>';
                     this.errors = '';
                 }).catch((errors) => {

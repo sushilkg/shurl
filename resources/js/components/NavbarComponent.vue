@@ -36,6 +36,9 @@
 
 <script>
     export default {
+        mounted() {
+            this.isLoggedIn = !!this.$cookies.get('api_token');
+        },
         props: {},
         data() {
             return {
