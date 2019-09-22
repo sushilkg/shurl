@@ -20,7 +20,7 @@ class DashboardController extends Controller
 
     public function delete(Link $link)
     {
-        return $link->delete();
+        $link->delete();
     }
 
     public function search(Request $request)

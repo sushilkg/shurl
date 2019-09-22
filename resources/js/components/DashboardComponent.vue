@@ -3,7 +3,7 @@
         <div class="row justify-content-center">
             <div class="col-12 col-md-10">
                 <div class="form-group row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-2">
                         <input v-model="searchTermLongUrl" type="text" @keyup="searchLinks"
                                class="form-control" name="searchTermLongUrl" placeholder="Search by long url">
                     </div>
@@ -18,8 +18,14 @@
                         Long url: {{link.long_url}}, short tag: {{link.short_tag}}<br/>
                         Total hits: {{link.hits}}<br/>
                         Expiration date: {{link.expiration_date ? link.expiration_date : '-' }}<br/>
-                        Deleted: {{!!link.deleted_at}}<br/>
-                        Created at: {{link.created_at}}, Updated at: {{link.created_at}}<br/>
+                        <small>Created at: {{link.created_at}}, Updated at: {{link.created_at}}</small>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-sm btn-danger" @click="deleteUrl(link.short_tag)"
+                                v-if="!link.deleted_at">Delete URL
+                        </button>
+                        <span class="badge badge-secondary" :disabled="!link.deleted_at"
+                              v-if="!!link.deleted_at">Deleted</span>
                     </div>
                 </div>
             </div>
@@ -42,6 +48,18 @@
             }
         },
         methods: {
+            deleteUrl(linkShortTag) {
+                let apiEndpoint = '/api/dashboard/delete/' + linkShortTag + '?api_token=' + this.$cookies.get('api_token');
+                axios.delete(apiEndpoint).then(response => {
+                    this.links.forEach(link => {
+                        if (link.short_tag === linkShortTag) {
+                            link.deleted_at = true;
+                        }
+                    })
+                }).catch((error) => {
+                    console.log(error)
+                });
+            },
             searchLinks() {
                 if (this.timeout) clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
