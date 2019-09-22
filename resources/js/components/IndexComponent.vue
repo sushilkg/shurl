@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-12 col-md-8 mb-4">
+            <div class="col-12 col-md-10 mb-4">
                 <form @submit="formSubmit">
-                    <div class="form-row mb-4">
-                        <div class="col-12 col-md-8 mb-2 mb-md-0">
+                    <div class="form-row mb-2">
+                        <div class="col-12 col-md-5 mb-2 mb-md-0">
                             <input v-model="long_url" type="text" class="form-control form-control-lg"
                                    id="destinationUrl"
                                    placeholder="Enter your link (required)">
@@ -12,6 +12,11 @@
                         <div class="col-12 col-md-4 mb-2 mb-md-0">
                             <input v-model="short_tag" type="text" class="form-control form-control-lg" id="shortCode"
                                    placeholder="Slug (optional)">
+                        </div>
+                    </div>
+                    <div class="form-row mb-4">
+                        <div class="col-12 col-md-4 mb-2 mb-md-0">
+                            <datetime v-model="expiration_date" input-class="form-control form-control-lg" type="datetime" :placeholder="'Expiration time (optional)'"></datetime>
                         </div>
                     </div>
                     <div class="form-row">
@@ -48,7 +53,8 @@
                 errors: '',
                 message: '',
                 long_url: '',
-                short_tag: ''
+                short_tag: '',
+                expiration_date: ''
             }
         }
         ,
