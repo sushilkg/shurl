@@ -6,23 +6,36 @@ use App\Exceptions\LinkExpiredException;
 use App\Exceptions\LinkGoneException;
 use App\Link;
 use App\Rules\BlacklistedUrls;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class LinkController extends Controller
 {
 
+    public function rules(): array
+    {
+        return [
+            'long_url' => ['required', new BlacklistedUrls()],
+            'short_tag' => 'unique:links'
+        ];
+    }
+
     /**
      * @return string
      */
-    public function store(): string
+    public function store(Request $request)
     {
-        request()->validate([
-            'long_url' => ['required', new BlacklistedUrls()],
-            'short_tag' => 'unique:links'
-        ]);
+        $validator = Validator::make($request->all(), $this->rules());
 
-        $expiration_date = null;
-        if (!empty(request('expiration_date'))) {
+        if ($validator->fails()) {
+            return response()->make([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $expiration_date = request('expiration_date');
+        if (!empty($expiration_date)) {
             $expiration_date = date('Y-m-d H:i:s', strtotime(request('expiration_date')));
         }
 

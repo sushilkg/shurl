@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Link;
-use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class LinksTest extends TestCase
 {
@@ -20,7 +20,7 @@ class LinksTest extends TestCase
             'expiration_date' => $this->faker->dateTimeBetween('now', '+1 month')->format('Y-m-d H:i:s')
         ];
 
-        $this->post('/links', $attributes);
+        $this->post('/api/links', $attributes);
         $this->assertDatabaseHas('links', $attributes);
 
         $response = $this->get('/'.$attributes['short_tag']);
@@ -52,7 +52,8 @@ class LinksTest extends TestCase
     /** @test */
     public function always_require_long_url(): void
     {
-        $this->post('/links')->assertSessionHasErrors();
+        $response = $this->post('/api/links');
+        $response->assertSee('The long url field is required.');
     }
 
     /** @test */
@@ -63,10 +64,9 @@ class LinksTest extends TestCase
             'short_tag' => $this->faker->slug
         ];
 
-        $this->post('/links', $attributes);
-        $response = $this->post('/links', $attributes);
-
-        $response->assertSessionHasErrors();
+        $this->post('/api/links', $attributes);
+        $response = $this->post('/api/links', $attributes);
+        $response->assertSee('The short tag has already been taken.');
     }
 
     /** @test */
@@ -76,7 +76,7 @@ class LinksTest extends TestCase
         $this->assertNotEmpty($link->short_tag);
 
         $attributes = ['long_url' => $this->faker->url];
-        $response = $this->post('/links', $attributes);
+        $response = $this->post('/api/links', $attributes);
         $response->assertSessionDoesntHaveErrors();
     }
 
@@ -93,8 +93,10 @@ class LinksTest extends TestCase
     /** @test */
     public function blacklisted_url_can_not_be_shortened(): void
     {
-        $this->post('/links', ['long_url' => 'https://baddomain.com'])->assertSessionHasErrors();
-        $this->post('/links', ['long_url' => 'https://gooddomain.com'])->assertSessionHasNoErrors();
+        $response1 = $this->post('/api/links', ['long_url' => 'https://baddomain.com']);
+        $response1->assertSee('The URL is blacklisted.');
+        $response2 = $this->post('/api/links', ['long_url' => 'https://gooddomain.com']);
+        $response2->assertSee('gooddomain.com');
     }
 
     //admin can search by short and long url
