@@ -45,11 +45,11 @@ class DashboardTest extends TestCase
     public function admin_can_see_search_by_short_or_long_link(): void
     {
         $link1 = factory(Link::class)->create();
-        $response1 = $this->actingAs(factory(User::class)->create(), 'api')->post('/api/dashboard/search', ['long_url' => $link1->long_url]);
+        $response1 = $this->actingAs(factory(User::class)->create(), 'api')->get('/api/dashboard/search', ['long_url' => $link1->long_url]);
         $response1->assertSee($link1->short_tag)->assertSee($link1->id)->assertSee($link1->created_at);
 
         $link2 = factory(Link::class)->create();
-        $response2 = $this->actingAs(factory(User::class)->create(), 'api')->post('/api/dashboard/search', ['short_tag' => $link2->short_tag]);
+        $response2 = $this->actingAs(factory(User::class)->create(), 'api')->get('/api/dashboard/search', ['short_tag' => $link2->short_tag]);
         $response2->assertSee($link2->short_tag)->assertSee($link2->id)->assertSee($link2->created_at);
     }
 

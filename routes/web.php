@@ -23,6 +23,4 @@ Route::get('/dashboard', function () {
     return view('app');
 });
 
-Auth::routes();
-
 Route::get('/{short_tag}', 'LinkController@get');
