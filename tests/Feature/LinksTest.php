@@ -99,6 +99,5 @@ class LinksTest extends TestCase
         $response2->assertSee('gooddomain.com');
     }
 
-    //admin can search by short and long url
-    //support data set that fit into memory
+    // Outdated comment removed
 }
