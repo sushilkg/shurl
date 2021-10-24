@@ -99,5 +99,5 @@ class LinksTest extends TestCase
         $response2->assertSee('gooddomain.com');
     }
 
-    // Outdated comment removed
+
 }
