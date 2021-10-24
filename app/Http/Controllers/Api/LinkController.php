@@ -22,7 +22,9 @@ class LinkController extends Controller
     }
 
     /**
+     * This method will store the link.
      * @return string
+     * 
      */
     public function store(Request $request)
     {
