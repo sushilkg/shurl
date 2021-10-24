@@ -13,5 +13,5 @@ A very simple URL shortener (short url - shurl) built on Laravel and Vue.
 5. Run migration using `php artisan migrate`
 6. Run `npm run watch`
 
-# Documentation
-Find more information on how to setup and develop: https://docs.google.com/document/d/1D4ZvZ0At-RW-w6QCaLjp-SoMmh_IwmdJW07W21--S-c/edit?usp=sharing
+
+
